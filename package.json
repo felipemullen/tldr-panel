@@ -47,6 +47,11 @@
           "default": "",
           "description": "Default language to retrieve documentation for. Will fallback to english if documentation is not found."
         },
+        "tldr-panel.panelPosition": {
+          "default": "full",
+          "enum": ["full", "partial"],
+          "description": "Determines if the command should be displayed as a tab in the current panel or in a new panel on the side."
+        },
         "tldr-panel.defaultPlatform": {
           "type": "string",
           "default": "",

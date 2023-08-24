@@ -1,4 +1,4 @@
-import { Memento, WorkspaceConfiguration, workspace } from 'vscode';
+import { Memento, ViewColumn, WorkspaceConfiguration, workspace } from 'vscode';
 import { TldrCommandMap, TldrPlatform } from '../model/tldr-panel.model';
 import { TldrGithub } from './tldr-github';
 
@@ -8,7 +8,8 @@ export enum TldrPanelConfigKeys {
     cacheTimeout = 'cacheTimeoutMinutes',
     showDebugInfo = 'showDebugInfo',
     defaultLanguage = 'defaultLanguage',
-    defaultPlatform = 'defaultPlatform'
+    defaultPlatform = 'defaultPlatform',
+    panelPosition = 'panelPosition'
 }
 
 export enum TldrPanelStorageKeys {
@@ -70,6 +71,14 @@ export class Memory {
      */
     public get cacheUpdateInterval() {
         return this._config.get<number>(TldrPanelConfigKeys.cacheTimeout)!;
+    }
+
+    /**
+     * Determines if the command should be displayed as a tab in the current panel or in a new panel on the side.
+     */
+    public get panelPosition() {
+        const configValue = this._config.get<string>(TldrPanelConfigKeys.panelPosition);
+        return configValue === 'full' ? ViewColumn.Active : ViewColumn.Beside;
     }
 
     public get cacheIsExpired() {

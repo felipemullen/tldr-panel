@@ -1,4 +1,4 @@
-import { ExtensionContext, ProgressLocation, ProgressOptions, Uri, commands, window, workspace } from 'vscode';
+import { ExtensionContext, ProgressLocation, ProgressOptions, Uri, ViewColumn, commands, window, workspace } from 'vscode';
 import { TldrGithub } from './lib/tldr-github';
 import { Memory } from './lib/memory';
 import { TldrPlatform, TldrPlatforms } from './model/tldr-panel.model';
@@ -34,8 +34,12 @@ export function activate(context: ExtensionContext) {
         if (commandChoice) {
             const uri = Uri.parse('TLDR:' + commandChoice);
 
-            // Command implementation: https://github.com/microsoft/vscode/blob/7ee9aa4757212dd513e7cf4b9b67426401e64695/extensions/markdown-language-features/src/commands/showPreview.ts#L79
-            await commands.executeCommand("markdown.showPreviewToSide", uri);
+            if (memory.panelPosition === ViewColumn.Active) {
+                await commands.executeCommand("markdown.showPreview", uri);
+            } else {
+                // Command implementation: https://github.com/microsoft/vscode/blob/7ee9aa4757212dd513e7cf4b9b67426401e64695/extensions/markdown-language-features/src/commands/showPreview.ts#L79
+                await commands.executeCommand("markdown.showPreviewToSide", uri);
+            }
         }
     }));
 
