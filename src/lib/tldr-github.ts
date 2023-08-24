@@ -131,7 +131,7 @@ export class TldrGithub {
 
                 commandMap[command].entries[language][platform] = {
                     url: `https://raw.githubusercontent.com/tldr-pages/tldr/main/${item.path}`
-                }
+                };
             }
 
             progress.report({ increment: (50 / size) });

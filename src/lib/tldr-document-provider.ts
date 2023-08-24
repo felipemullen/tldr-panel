@@ -9,7 +9,7 @@ import { TldrGithub } from './tldr-github';
     workspace.registerTextDocumentContentProvider(TldrDocumentProvider.Scheme, new TldrDocumentProvider(tldrInstance))
  */
 export class TldrDocumentProvider implements TextDocumentContentProvider {
-    public static Scheme = 'TLDR';
+    public static scheme = 'TLDR';
 
     private _tldr: TldrGithub;
 
@@ -26,6 +26,6 @@ export class TldrDocumentProvider implements TextDocumentContentProvider {
             cancellable: false
         };
 
-        return window.withProgress<string>(getCommandOptions, progress => this._tldr.getCommandInfo(progress, command))
+        return window.withProgress<string>(getCommandOptions, progress => this._tldr.getCommandInfo(progress, command));
     }
 };

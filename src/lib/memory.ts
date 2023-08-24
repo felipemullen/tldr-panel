@@ -2,7 +2,7 @@ import { Memento, ViewColumn, WorkspaceConfiguration, workspace } from 'vscode';
 import { TldrCommandMap, TldrPlatform } from '../model/tldr-panel.model';
 import { TldrGithub } from './tldr-github';
 
-export const TldrConfigKey = 'tldr-panel';
+export const TLDR_CONFIG_KEY = 'tldr-panel';
 
 export enum TldrPanelConfigKeys {
     cacheTimeout = 'cacheTimeoutMinutes',
@@ -24,7 +24,7 @@ export class Memory {
 
     constructor(storage: Memento) {
         this._storageContext = storage;
-        this._config = workspace.getConfiguration(TldrConfigKey);
+        this._config = workspace.getConfiguration(TLDR_CONFIG_KEY);
     }
 
     /**
@@ -78,7 +78,7 @@ export class Memory {
      */
     public get panelPosition() {
         const configValue = this._config.get<string>(TldrPanelConfigKeys.panelPosition);
-        return configValue === 'full' ? ViewColumn.Active : ViewColumn.Beside;
+        return configValue === 'active' ? ViewColumn.Active : ViewColumn.Beside;
     }
 
     public get cacheIsExpired() {

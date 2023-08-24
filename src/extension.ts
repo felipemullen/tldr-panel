@@ -1,7 +1,7 @@
 import { ExtensionContext, ProgressLocation, ProgressOptions, Uri, ViewColumn, commands, window, workspace } from 'vscode';
 import { TldrGithub } from './lib/tldr-github';
 import { Memory } from './lib/memory';
-import { TldrPlatform, TldrPlatforms } from './model/tldr-panel.model';
+import { TldrPlatform, TLDR_PLATFORMS } from './model/tldr-panel.model';
 import { TldrDocumentProvider } from './lib/tldr-document-provider';
 
 const cacheProgressOptions: ProgressOptions = {
@@ -16,7 +16,7 @@ export function activate(context: ExtensionContext) {
     const memory = new Memory(context.globalState);
     const tldr = new TldrGithub(memory);
 
-    context.subscriptions.push(workspace.registerTextDocumentContentProvider(TldrDocumentProvider.Scheme, new TldrDocumentProvider(tldr)));
+    context.subscriptions.push(workspace.registerTextDocumentContentProvider(TldrDocumentProvider.scheme, new TldrDocumentProvider(tldr)));
 
     context.subscriptions.push(commands.registerCommand('tldr-panel.refreshCache', async () => {
         await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
@@ -57,7 +57,7 @@ export function activate(context: ExtensionContext) {
     }));
 
     context.subscriptions.push(commands.registerCommand('tldr-panel.setPlatform', async () => {
-        const platformChoice = await window.showQuickPick(TldrPlatforms, {
+        const platformChoice = await window.showQuickPick(TLDR_PLATFORMS, {
             placeHolder: 'Select primary platform for lookup. Fallback will be "Common" or the first platform where the command is available'
         });
 
