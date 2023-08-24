@@ -1,26 +1,66 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import { ExtensionContext, ProgressLocation, ProgressOptions, Uri, commands, window, workspace } from 'vscode';
+import { TldrGithub } from './lib/tldr-github';
+import { Memory } from './lib/memory';
+import { TldrPlatform, TldrPlatforms } from './model/tldr-panel.model';
+import { TldrDocumentProvider } from './lib/tldr-document-provider';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+const cacheProgressOptions: ProgressOptions = {
+    location: ProgressLocation.Notification,
+    title: 'TLDR Panel: Caching TLDR data',
+    cancellable: false
+};
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-tldr-panel" is now active!');
+export function activate(context: ExtensionContext) {
+    console.log('[tldr-panel] Activating extension');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-tldr-panel.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from tl;dr panel!');
-	});
+    const memory = new Memory(context.globalState);
+    const tldr = new TldrGithub(memory);
 
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(workspace.registerTextDocumentContentProvider(TldrDocumentProvider.Scheme, new TldrDocumentProvider(tldr)));
+
+    context.subscriptions.push(commands.registerCommand('tldr-panel.refreshCache', async () => {
+        await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
+    }));
+
+    context.subscriptions.push(commands.registerCommand('tldr-panel.showTldrPage', async () => {
+        if (memory.cacheIsExpired) {
+            await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
+        }
+
+        const commandChoice = await window.showQuickPick(memory.commandList, {
+            placeHolder: 'Enter a command'
+        });
+
+        if (commandChoice) {
+            const uri = Uri.parse('TLDR:' + commandChoice);
+
+            // Command implementation: https://github.com/microsoft/vscode/blob/7ee9aa4757212dd513e7cf4b9b67426401e64695/extensions/markdown-language-features/src/commands/showPreview.ts#L79
+            await commands.executeCommand("markdown.showPreviewToSide", uri);
+        }
+    }));
+
+
+    context.subscriptions.push(commands.registerCommand('tldr-panel.chooseLanguage', async () => {
+        if (memory.cacheIsExpired) {
+            await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
+        }
+
+        const languageChoice = await window.showQuickPick(memory.languageList, {
+            placeHolder: 'Select default language. Fallback will always be "English"'
+        });
+
+        await memory.setDefaultLanguage(languageChoice);
+    }));
+
+    context.subscriptions.push(commands.registerCommand('tldr-panel.setPlatform', async () => {
+        const platformChoice = await window.showQuickPick(TldrPlatforms, {
+            placeHolder: 'Select primary platform for lookup. Fallback will be "Common" or the first platform where the command is available'
+        });
+
+        await memory.setPlatformOverride(platformChoice as TldrPlatform);
+    }));
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+
+}

@@ -1,5 +1,5 @@
 {
-  "name": "vscode-tldr-panel",
+  "name": "tldr-panel",
   "displayName": "tl;dr panel",
   "description": "A utility panel for tldr-pages command summaries",
   "version": "0.0.1",
@@ -14,10 +14,54 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-tldr-panel.helloWorld",
-        "title": "Hello World"
+        "command": "tldr-panel.refreshCache",
+        "title": "TLDR Panel: Refresh Cache"
+      },
+      {
+        "command": "tldr-panel.showTldrPage",
+        "title": "TLDR Panel: Lookup command"
+      },
+      {
+        "command": "tldr-panel.chooseLanguage",
+        "title": "TLDR Panel: Choose default language"
+      },
+      {
+        "command": "tldr-panel.setPlatform",
+        "title": "TLDR Panel: Set default platform"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "TLDR Panel",
+      "properties": {
+        "tldr-panel.showDebugInfo": {
+          "type": "boolean",
+          "default": false,
+          "description": "Determines wether to show debugging information in page results. If true, will display information about resolved language and platforms."
+        },
+        "tldr-panel.cacheTimeoutMinutes": {
+          "type": "number",
+          "default": 43200,
+          "description": "Time specification in minutes between command cache refreshes. Default is 43200 (30 days)."
+        },
+        "tldr-panel.defaultLanguage": {
+          "default": "",
+          "description": "Default language to retrieve documentation for. Will fallback to english if documentation is not found."
+        },
+        "tldr-panel.defaultPlatform": {
+          "type": "string",
+          "default": "",
+          "enum": [
+            "android",
+            "common",
+            "linux",
+            "osx",
+            "sunos",
+            "windows"
+          ],
+          "description": "Default platform to retrieve documentation for. Will be set to your current platform and use \"common\" as a fallback if documentation is not found."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -31,19 +75,22 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.81.0",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "20.2.5",
+    "@types/vscode": "^1.81.0",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
+    "@vscode/test-electron": "^2.3.2",
     "eslint": "^8.41.0",
     "glob": "^8.1.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.1.3",
     "ts-loader": "^9.4.3",
+    "typescript": "^5.1.3",
     "webpack": "^5.85.0",
-    "webpack-cli": "^5.1.1",
-    "@vscode/test-electron": "^2.3.2"
+    "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
   }
 }
