@@ -3,6 +3,13 @@
   "displayName": "tl;dr panel",
   "description": "A utility panel for tldr-pages shell command summaries",
   "version": "0.0.1",
+  "author": {
+    "name": "Felipe Mullen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felipemullen/tldr-panel.git"
+  },
   "engines": {
     "vscode": "^1.81.0"
   },

@@ -1,71 +1,34 @@
-# vscode-tldr-panel README
+# tldr-panel
 
-This is the README for your extension "vscode-tldr-panel". After writing up a brief description, we recommend including the following sections.
+A utility for quick and easy command lookups directly in VSCode. Makes use of the excellent [tldr](https://github.com/tldr-pages/tldr/) pages:
+
+> *a collection of community-maintained help pages for command-line tools, that aims to be a simpler, more approachable complement to traditional man pages.*
+
+![tldr-panel usage](./docs/usage-video.gif)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Ability to search any command available in the **tldr documentation**
+- Lightweight and fast, opens directly in vscode using the command palette
+- Always up to date with the official tldr pages
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Open your command palette using `ctrl/cmd+shift+p` and type `TLDR Panel: Lookup command`. Enter the command you would like to view docs for, and voilà! 🤌
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `tldr-panel.panelPosition`: Specify if the tldr page should be display in the active tab or a new tab. Supported values: `active | beside`
+- `tldr-panel.cacheTimeoutMinutes`: Set the time value for how often the page index will be refreshed. Defaults to 30 days. (Note that command pages will always fetch the latest)
+- `tldr-panel.defaultLanguage`: Specify language to prioritize when looking up commands. Will fallback to english if documentation is not found.
+- `tldr-panel.defaultPlatform`: Specify platform to prioritize when looking up commands. Will use your current platform and fallback to \"common\" or the first available documentation if not available for your platform.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None yet. Please file issues in the [Github Repo](https://github.com/felipemullen/tldr-panel/issues) or open up a pull request yourself!
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Please see the [change log](./docs/CHANGELOG.md)
