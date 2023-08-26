@@ -23,6 +23,7 @@ export class TldrGithub {
      */
     public async getCommandInfo(progress: Progress<NotificationProgress>, command: string) {
         if (!(command in this._memory.cachedPageDirectory)) {
+            progress.report({ increment: 100 });
             window.showErrorMessage('TLDR Panel: Command does not exist');
             return 'Command does not exist';
         }
@@ -30,7 +31,7 @@ export class TldrGithub {
         progress.report({ increment: 0 });
 
         const root = this._memory.cachedPageDirectory[command];
-        const lang = root.entries[this._memory.defaultLanguage] || root.entries['en'];
+        const lang = root.entries[this._memory.defaultLanguage];
         const entry = lang[this._memory.defaultPlatform] || lang.common || this._firstEntry(lang);
 
         if (entry) {
@@ -38,6 +39,7 @@ export class TldrGithub {
             progress.report({ increment: 50 });
 
             if (!response.ok) {
+                progress.report({ increment: 50 });
                 return `TLDR: Unable to retrieve document. Http status code ${response.status}`;
             }
 
@@ -47,6 +49,7 @@ export class TldrGithub {
             return markdownContents;
         }
 
+        progress.report({ increment: 100 });
         return 'TLDR: Unable to load page';
     }
 
@@ -107,13 +110,13 @@ export class TldrGithub {
 
         const size = treeData.length;
         const pages = treeData.reduce((commandMap, item) => {
-            const path = item.path || '';
+            const path = item.path;
             const validPath = /^pages.+\.md$/;
 
             if (item.type === 'blob' && validPath.test(path)) {
-                const pageKey = path.match(/^(pages\/|pages\.[a-z]{2}[_A-Z]*)/)?.[0].replace(/\//g, '') || '';
+                const pageKey = path.match(/^(pages\/|pages\.[a-z]{2}[_A-Z]*)/)?.[0].replace(/\//g, '')!;
                 const language = pageKey.replace(/^pages[\.]*/, '') || 'en';
-                const file = path.match(/[a-z0-9_\-\+\[\!\.]+\.md$/)?.[0] || '';
+                const file = path.match(/[a-z0-9_\-\+\[\!\.]+\.md$/)?.[0]!;
                 const platform = path.replace(pageKey, '').replace(file, '').replace(/\//g, '') as TldrPlatform;
                 const command = file.replace('.md', '');
 

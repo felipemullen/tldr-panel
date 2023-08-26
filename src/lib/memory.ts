@@ -40,7 +40,7 @@ export class Memory {
      * Will fallback to english if documentation is not found.
      */
     public get defaultLanguage() {
-        return this._config.get<string>(TldrPanelConfigKeys.defaultLanguage)!;
+        return this._config.get<string>(TldrPanelConfigKeys.defaultLanguage) || 'en';
     }
 
     /**
@@ -82,12 +82,12 @@ export class Memory {
     }
 
     public get cacheIsExpired() {
-        if (!this.cachedPageDirectory) {
+        if (!this.commandList.length) {
             return true;
         }
 
         const cacheUpdatedDate = this._storageContext.get<number>(TldrPanelStorageKeys.lastUpdate, 0);
-        const expiryTime = cacheUpdatedDate + (this.cacheUpdateInterval * 1000);
+        const expiryTime = cacheUpdatedDate + (this.cacheUpdateInterval * 60 * 1000);
 
         return Date.now() > expiryTime;
     }
@@ -97,7 +97,7 @@ export class Memory {
      * caching takes place in {@link TldrGithub.cacheCommands}
      */
     public get cachedPageDirectory() {
-        return this._storageContext.get<TldrCommandMap>(TldrPanelStorageKeys.cachedPages)!;
+        return this._storageContext.get<TldrCommandMap>(TldrPanelStorageKeys.cachedPages) || {};
     }
 
     public get commandList() {
@@ -105,12 +105,12 @@ export class Memory {
     }
 
     public get languageList() {
-        return this._storageContext.get<string[]>(TldrPanelStorageKeys.languages)!;
+        return this._storageContext.get<string[]>(TldrPanelStorageKeys.languages) || [];
     }
 
     public updateCache(pages: TldrCommandMap, languages: string[]) {
         this._storageContext.update(TldrPanelStorageKeys.cachedPages, pages);
-        this._storageContext.update(TldrPanelStorageKeys.languages, languages);
+        this._storageContext.update(TldrPanelStorageKeys.languages, languages.sort());
 
         const time = Date.now();
         this._storageContext.update(TldrPanelStorageKeys.lastUpdate, time);

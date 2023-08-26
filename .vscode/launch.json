@@ -18,6 +18,21 @@
 			"preLaunchTask": "${defaultBuildTask}"
 		},
 		{
+            "name": "Jest Debugger",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "--inspect-brk",
+                "${workspaceRoot}/node_modules/.bin/jest",
+                "--runInBand",
+                "--coverage",
+                "false",
+                "${file}"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+		{
 			"name": "Extension Tests",
 			"type": "extensionHost",
 			"request": "launch",

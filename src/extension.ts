@@ -35,10 +35,10 @@ export function activate(context: ExtensionContext) {
             const uri = Uri.parse('TLDR:' + commandChoice);
 
             if (memory.panelPosition === ViewColumn.Active) {
-                await commands.executeCommand("markdown.showPreview", uri);
+                await commands.executeCommand('markdown.showPreview', uri);
             } else {
                 // Command implementation: https://github.com/microsoft/vscode/blob/7ee9aa4757212dd513e7cf4b9b67426401e64695/extensions/markdown-language-features/src/commands/showPreview.ts#L79
-                await commands.executeCommand("markdown.showPreviewToSide", uri);
+                await commands.executeCommand('markdown.showPreviewToSide', uri);
             }
         }
     }));

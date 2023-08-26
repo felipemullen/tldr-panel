@@ -5,7 +5,6 @@ export interface GithubContentsItemLinks {
 }
 
 export interface GithubContentsItem {
-    name: string;
     path: string;
     url: string;
     type: 'file' | 'folder' | 'blob';
