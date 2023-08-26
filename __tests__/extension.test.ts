@@ -8,6 +8,18 @@ import { TldrGithub } from '../src/lib/tldr-github';
 describe('TLDR Panel tests', () => {
     let context: ExtensionContext;
 
+    /**
+     * This function is used in place of {@link activate} because the mocks do not allow
+     * waiting with await. Perhaps there is an elegant solution to the problem, but most
+     * of the expect statements in this test suite need to wait at least one promise to
+     * tick before they will pass
+     */
+    async function activateAndWait() {
+        activate(context);
+        await new Promise(process.nextTick);
+        await new Promise(process.nextTick);
+    }
+
     beforeEach(() => {
         context = {
             globalState: mockGlobalState,
@@ -22,7 +34,7 @@ describe('TLDR Panel tests', () => {
     });
 
     it('extension will activate', async () => {
-        activate(context);
+        await activateAndWait();
         expect(context.subscriptions.push).toHaveBeenCalledTimes(5);
     });
 
@@ -39,9 +51,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(commands.registerCommand).toHaveBeenCalledWith(TldrCommands.refreshCache, expect.anything());
         expect(window.withProgress).toHaveBeenCalledTimes(1);
@@ -63,9 +73,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
@@ -84,9 +92,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
@@ -103,9 +109,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
@@ -124,9 +128,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
@@ -148,9 +150,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.withProgress).toHaveBeenCalledTimes(1);
@@ -172,9 +172,7 @@ describe('TLDR Panel tests', () => {
             await callback();
         });
 
-        activate(context);
-
-        await new Promise(process.nextTick);
+        await activateAndWait();
 
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledWith(TLDR_PLATFORMS, expect.objectContaining({
