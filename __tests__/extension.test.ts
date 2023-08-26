@@ -1,4 +1,4 @@
-import { activate, deactivate } from '../src/extension';
+import { TldrCommands, activate, deactivate } from '../src/extension';
 import { ViewColumn, commands, mockGlobalState, window } from '../__mocks__/vscode';
 import { ExtensionContext } from 'vscode';
 import { TLDR_PLATFORMS } from '../src/model/tldr-panel.model';
@@ -30,7 +30,7 @@ describe('TLDR Panel tests', () => {
         deactivate();
     });
 
-    it('will register tldr-panel.refreshCache', async () => {
+    it(`will register ${TldrCommands.refreshCache}`, async () => {
         // (context.subscriptions.push as jest.Mock).mockImplementationOnce(() => { });
 
         const cacheCommandsSpy = jest.spyOn(TldrGithub.prototype, 'cacheCommands');
@@ -43,7 +43,7 @@ describe('TLDR Panel tests', () => {
 
         await new Promise(process.nextTick);
 
-        expect(commands.registerCommand).toHaveBeenCalledWith('tldr-panel.refreshCache', expect.anything());
+        expect(commands.registerCommand).toHaveBeenCalledWith(TldrCommands.refreshCache, expect.anything());
         expect(window.withProgress).toHaveBeenCalledTimes(1);
         expect(window.withProgress).toHaveBeenCalledWith(expect.objectContaining({
             title: 'TLDR Panel: Caching TLDR data'
@@ -52,7 +52,7 @@ describe('TLDR Panel tests', () => {
         expect(cacheCommandsSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('will register tldr-panel.showTldrPage', async () => {
+    it(`will register ${TldrCommands.showPage}`, async () => {
         const cacheIsExpiredSpy = jest.spyOn(Memory.prototype, 'cacheIsExpired', 'get').mockReturnValueOnce(false);
         window.showQuickPick.mockResolvedValueOnce('my-cmd');
 
@@ -114,7 +114,7 @@ describe('TLDR Panel tests', () => {
         expect(commands.executeCommand).not.toHaveBeenCalled();
     });
 
-    it('will register tldr-panel.chooseLanguage', async () => {
+    it(`will register ${TldrCommands.setLanguage}`, async () => {
         const setLanguageSpy = jest.spyOn(Memory.prototype, 'setDefaultLanguage');
         const cacheIsExpiredSpy = jest.spyOn(Memory.prototype, 'cacheIsExpired', 'get').mockReturnValueOnce(false);
 
@@ -162,7 +162,7 @@ describe('TLDR Panel tests', () => {
         expect(setLanguageSpy).toHaveBeenCalledTimes(1);
     });
 
-    it('will register tldr-panel.setPlatform', async () => {
+    it(`will register ${TldrCommands.setPlatform}`, async () => {
         const setPlatformSpy = jest.spyOn(Memory.prototype, 'setPlatformOverride');
 
         commands.registerCommand.mockImplementationOnce(() => { });

@@ -4,6 +4,13 @@ import { Memory } from './lib/memory';
 import { TldrPlatform, TLDR_PLATFORMS } from './model/tldr-panel.model';
 import { TldrDocumentProvider } from './lib/tldr-document-provider';
 
+export enum TldrCommands {
+    refreshCache = 'tldr-panel.refreshCache',
+    showPage = 'tldr-panel.showTldrPage',
+    setLanguage = 'tldr-panel.chooseLanguage',
+    setPlatform = 'tldr-panel.setPlatform'
+}
+
 const cacheProgressOptions: ProgressOptions = {
     location: ProgressLocation.Notification,
     title: 'TLDR Panel: Caching TLDR data',
@@ -18,11 +25,11 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(workspace.registerTextDocumentContentProvider(TldrDocumentProvider.scheme, new TldrDocumentProvider(tldr)));
 
-    context.subscriptions.push(commands.registerCommand('tldr-panel.refreshCache', async () => {
+    context.subscriptions.push(commands.registerCommand(TldrCommands.refreshCache, async () => {
         await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
     }));
 
-    context.subscriptions.push(commands.registerCommand('tldr-panel.showTldrPage', async () => {
+    context.subscriptions.push(commands.registerCommand(TldrCommands.showPage, async () => {
         if (memory.cacheIsExpired) {
             await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
         }
@@ -44,7 +51,7 @@ export function activate(context: ExtensionContext) {
     }));
 
 
-    context.subscriptions.push(commands.registerCommand('tldr-panel.chooseLanguage', async () => {
+    context.subscriptions.push(commands.registerCommand(TldrCommands.setLanguage, async () => {
         if (memory.cacheIsExpired) {
             await window.withProgress(cacheProgressOptions, progress => tldr.cacheCommands(progress, true));
         }
@@ -56,7 +63,7 @@ export function activate(context: ExtensionContext) {
         await memory.setDefaultLanguage(languageChoice);
     }));
 
-    context.subscriptions.push(commands.registerCommand('tldr-panel.setPlatform', async () => {
+    context.subscriptions.push(commands.registerCommand(TldrCommands.setPlatform, async () => {
         const platformChoice = await window.showQuickPick(TLDR_PLATFORMS, {
             placeHolder: 'Select primary platform for lookup. Fallback will be "Common" or the first platform where the command is available'
         });
