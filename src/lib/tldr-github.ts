@@ -31,7 +31,7 @@ export class TldrGithub {
         progress.report({ increment: 0 });
 
         const root = this._memory.cachedPageDirectory[command];
-        const lang = root.entries[this._memory.defaultLanguage];
+        const lang = root.entries[this._memory.defaultLanguage] || root.entries['en'];
         const entry = lang[this._memory.defaultPlatform] || lang.common || this._firstEntry(lang);
 
         if (entry) {

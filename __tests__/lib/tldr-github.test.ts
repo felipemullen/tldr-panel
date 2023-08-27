@@ -112,6 +112,45 @@ describe('TldrDocumentProvider', () => {
             expect(result).toBe(markdownContents);
         });
 
+        it('will fall back to "en" language if preferred language is not found', async () => {
+            mockConfiguration.update(TldrPanelConfigKeys.defaultLanguage, 'pt_BR');
+
+            memory.updateCache(pages, []);
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: jest.fn()
+            });
+
+            await tldr.getCommandInfo(mockProgress, 'git');
+            expect(mockProgress.report).toHaveBeenCalledTimes(3);
+            expect(mockFetch).toHaveBeenCalledTimes(1);
+            expect(mockFetch).toHaveBeenCalledWith(pages.git.entries.en?.android?.url);
+        });
+
+        fit('will retrieve documentation in the preferred language when available', async () => {
+            mockConfiguration.update(TldrPanelConfigKeys.defaultLanguage, 'pt_BR');
+
+            pages.git.entries['pt_BR'] = {
+                'android': {
+                    url: 'git:pt_BR:android'
+                }
+            };
+            memory.updateCache(pages, []);
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: jest.fn()
+            });
+
+            await tldr.getCommandInfo(mockProgress, 'git');
+            expect(mockProgress.report).toHaveBeenCalledTimes(3);
+            expect(mockFetch).toHaveBeenCalledTimes(1);
+            expect(mockFetch).toHaveBeenCalledWith('git:pt_BR:android');
+
+            delete pages.git.entries['pt_BR'];
+        });
+
         it('will return error with status code if api returns a bad response', async () => {
             mockConfiguration.update(TldrPanelConfigKeys.defaultPlatform, 'PLATFORM');
 
