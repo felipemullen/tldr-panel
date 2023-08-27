@@ -2,7 +2,7 @@
   "name": "tldr-panel",
   "displayName": "tl;dr panel",
   "description": "A utility panel for tldr-pages shell command summaries",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": {
     "name": "Felipe Mullen"
   },
