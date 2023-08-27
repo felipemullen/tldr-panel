@@ -1,4 +1,4 @@
-import { ProgressLocation, ProgressOptions, ProviderResult, TextDocumentContentProvider, Uri, window } from 'vscode';
+import { EventEmitter, ProgressLocation, ProgressOptions, ProviderResult, TextDocumentContentProvider, Uri, window } from 'vscode';
 import { TldrGithub } from './tldr-github';
 
 /**
@@ -18,7 +18,7 @@ export class TldrDocumentProvider implements TextDocumentContentProvider {
     }
 
     provideTextDocumentContent(uri: Uri): ProviderResult<string> {
-        const command = uri.path;
+        const command = uri.path.split(' | ')[0];
 
         const getCommandOptions: ProgressOptions = {
             location: ProgressLocation.Notification,

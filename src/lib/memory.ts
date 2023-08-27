@@ -118,9 +118,11 @@ export class Memory {
 
     public async setDefaultLanguage(newDefault?: string) {
         await this._config.update(TldrPanelConfigKeys.defaultLanguage, newDefault, true);
+        this._config = workspace.getConfiguration(TLDR_CONFIG_KEY);
     }
 
     public async setPlatformOverride(override?: TldrPlatform) {
         await this._config.update(TldrPanelConfigKeys.defaultPlatform, override, true);
+        this._config = workspace.getConfiguration(TLDR_CONFIG_KEY);
     }
 }

@@ -39,7 +39,8 @@ export function activate(context: ExtensionContext) {
         });
 
         if (commandChoice) {
-            const uri = Uri.parse('TLDR:' + commandChoice);
+            const end = new Date().toLocaleString();
+            const uri = Uri.parse('TLDR:' + commandChoice + ' | ' + end);
 
             if (memory.panelPosition === ViewColumn.Active) {
                 await commands.executeCommand('markdown.showPreview', uri);
