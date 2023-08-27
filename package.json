@@ -3,6 +3,13 @@
   "displayName": "tl;dr panel",
   "description": "A utility panel for tldr-pages shell command summaries",
   "version": "1.0.0",
+  "publisher": "felipemullen",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "icon": "docs/tldr-icon.png",
+  "galleryBanner": {
+    "color": "rgb(43, 48, 46)",
+    "theme": "dark"
+  },
   "author": {
     "name": "Felipe Mullen"
   },
@@ -15,6 +22,11 @@
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+      "tl;dr",
+      "tldr",
+      "shell commands"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
