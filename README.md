@@ -6,6 +6,8 @@ A utility for quick and easy command lookups directly in VSCode. Makes use of th
 
 ![tldr-panel usage](./docs/usage-video.gif)
 
+<a href="https://www.buymeacoffee.com/felipemullen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 ## Features
 
 - Ability to search any command available in the **tldr documentation**
