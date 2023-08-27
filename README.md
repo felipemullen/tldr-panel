@@ -12,9 +12,15 @@ A utility for quick and easy command lookups directly in VSCode. Makes use of th
 - Lightweight and fast, opens directly in vscode using the command palette
 - Always up to date with the official tldr pages
 
-## Usage
+## How to use this extension
 
 Open your command palette using `ctrl/cmd+shift+p` and type `TLDR Panel: Lookup command`. Enter the command you would like to view docs for, and voilà! 🤌
+
+Alternatively, you may toggle the command lookup using the keyboard with the default binding: `ctrl/cmd+alt+/`
+
+This is configurable in the `TLDR Panel` keybindings section
+
+![TLDR Panel keybidings](docs/tldr-keybindings.png)
 
 ## Extension Settings
 
