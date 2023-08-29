@@ -2,7 +2,7 @@
   "name": "tldr-panel",
   "displayName": "tl;dr panel",
   "description": "A utility panel for tldr-pages shell command summaries",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "felipemullen",
   "license": "SEE LICENSE IN LICENSE.md",
   "icon": "docs/tldr-icon.png",
