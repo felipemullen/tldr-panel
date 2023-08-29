@@ -128,7 +128,7 @@ describe('TldrDocumentProvider', () => {
             expect(mockFetch).toHaveBeenCalledWith(pages.git.entries.en?.android?.url);
         });
 
-        fit('will retrieve documentation in the preferred language when available', async () => {
+        it('will retrieve documentation in the preferred language when available', async () => {
             mockConfiguration.update(TldrPanelConfigKeys.defaultLanguage, 'pt_BR');
 
             pages.git.entries['pt_BR'] = {

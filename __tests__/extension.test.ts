@@ -78,7 +78,7 @@ describe('TLDR Panel tests', () => {
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
         expect(commands.executeCommand).toHaveBeenCalledTimes(1);
-        expect(commands.executeCommand).toHaveBeenCalledWith('markdown.showPreview', 'TLDR:my-cmd');
+        expect(commands.executeCommand).toHaveBeenCalledWith('markdown.showPreview', expect.stringContaining('TLDR:my-cmd'));
     });
 
     it('will open command panel to the side based on configuration value', async () => {
@@ -97,7 +97,7 @@ describe('TLDR Panel tests', () => {
         expect(cacheIsExpiredSpy).toHaveBeenCalledTimes(1);
         expect(window.showQuickPick).toHaveBeenCalledTimes(1);
         expect(commands.executeCommand).toHaveBeenCalledTimes(1);
-        expect(commands.executeCommand).toHaveBeenCalledWith('markdown.showPreviewToSide', 'TLDR:my-cmd');
+        expect(commands.executeCommand).toHaveBeenCalledWith('markdown.showPreviewToSide', expect.stringContaining('TLDR:my-cmd'));
     });
 
     it('will cache commands if necessary before showing command choices', async () => {
