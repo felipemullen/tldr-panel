@@ -116,25 +116,30 @@ export class TldrGithub {
             if (item.type === 'blob' && validPath.test(path)) {
                 const pageKey = path.match(/^(pages\/|pages\.[a-z]{2}[_A-Z]*)/)?.[0].replace(/\//g, '')!;
                 const language = pageKey.replace(/^pages[\.]*/, '') || 'en';
-                const file = path.match(/[a-z0-9_\-\+\[\!\.]+\.md$/)?.[0]!;
-                const platform = path.replace(pageKey, '').replace(file, '').replace(/\//g, '') as TldrPlatform;
-                const command = file.replace('.md', '');
+                const file = path.match(/[a-z0-9_\-\+\[\!\.\^]+\.md$/)?.[0];
 
-                if (!(command in commandMap)) {
-                    commandMap[command] = {
-                        command,
-                        entries: {}
+                if (file) {
+                    const platform = path.replace(pageKey, '').replace(file, '').replace(/\//g, '') as TldrPlatform;
+                    const command = file.replace('.md', '');
+
+                    if (!(command in commandMap)) {
+                        commandMap[command] = {
+                            command,
+                            entries: {}
+                        };
+                    }
+
+                    if (!(language in commandMap[command].entries)) {
+                        languages.add(language);
+                        commandMap[command].entries[language] = {};
+                    }
+
+                    commandMap[command].entries[language][platform] = {
+                        url: `https://raw.githubusercontent.com/tldr-pages/tldr/main/${item.path}`
                     };
+                } else {
+                    console.warn('[tldr-panel] Unable to parse file name:', path);
                 }
-
-                if (!(language in commandMap[command].entries)) {
-                    languages.add(language);
-                    commandMap[command].entries[language] = {};
-                }
-
-                commandMap[command].entries[language][platform] = {
-                    url: `https://raw.githubusercontent.com/tldr-pages/tldr/main/${item.path}`
-                };
             }
 
             progress.report({ increment: (50 / size) });
